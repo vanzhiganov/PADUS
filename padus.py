@@ -1,10 +1,6 @@
 #!/usr/bin/python
 
 """
-INSTALL
-
-yum install python-ldap
-
 groupadd -g 10002 ldap_test
 
 ldapsearch -x -H ldap://172.16.2.201 -D cn=ldap,cn=users,dc=gm,dc=local -w ldap -b

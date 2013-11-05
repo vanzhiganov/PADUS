@@ -42,34 +42,34 @@ def search_member_in_ldap(ldap, ldapo, cn):
 	print baseDN
 	print searchFilter
 
-	try:
-		ldap_result_id = ldapo.search(baseDN, searchScope, searchFilter, retrieveAttributes)
-		result_set = []
-		while 1:
-			result_type, result_data = ldapo.result(ldap_result_id, 0)
-			if (result_data == []):
-				break
-			else:
-				if result_type == ldap.RES_SEARCH_ENTRY:
-					result_set.append(result_data)
+    try:
+        ldap_result_id = ldapo.search(baseDN, searchScope, searchFilter, retrieveAttributes)
+        result_set = []
+        while 1:
+            result_type, result_data = ldapo.result(ldap_result_id, 0)
+            if (result_data == []):
+                break
+            else:
+                if result_type == ldap.RES_SEARCH_ENTRY:
+                    result_set.append(result_data)
 
-		print result_set[0][0][1]['cn'][0]
-		str_uid = result_set[0][0][1]['uid'][0]
-		print result_set[0][0][1]['uidNumber'][0]
-		group_id = result_set[0][0][1]['gidNumber'][0]
-		print result_set[0][0][1]['unixHomeDirectory'][0]
-		print result_set[0][0][1]['loginShell'][0]
-		
-		print "Check localgroup '%s': " % group_id
-		if findgroup(group_id):
-			print "Group already exists..."
-		else:
-			print "Group not exists...  create"
-			os.system("groupadd -g %s %s" % (group_id, groupname))
-			
-		
+        print result_set[0][0][1]['cn'][0]
+        str_uid = result_set[0][0][1]['uid'][0]
+        print result_set[0][0][1]['uidNumber'][0]
+        group_id = result_set[0][0][1]['gidNumber'][0]
+        print result_set[0][0][1]['unixHomeDirectory'][0]
+        print result_set[0][0][1]['loginShell'][0]
+        
+        print "Check localgroup '%s': " % group_id
+        if findgroup(group_id):
+            print "Group already exists..."
+        else:
+            print "Group not exists...  create"
+            os.system("groupadd -g %s %s" % (group_id, groupname))
+        
+        
         # cat /etc/passwd | grep ^root: | sed -e 's/:.*//g'
-		
+
         print "Check localuser '%s':" % str_uid
 
         #print pwd.getpwnam(str_uid)

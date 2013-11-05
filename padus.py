@@ -104,7 +104,7 @@ ldapo.simple_bind_s('cn=ldap,cn=users,dc=gm,dc=local', 'ldap')
 lc = ldapom.LdapConnection(uri='ldap://172.16.2.201', base='CN=ldap_test,CN=Users,DC=gm,DC=local', login='cn=ldap,cn=users,dc=gm,dc=local', password='ldap') 
 """
 
-baseDN = "cn=users,dc=gm,dc=local"
+baseDN = "dc=gm,dc=local"
 searchScope = ldap.SCOPE_SUBTREE
 ## retrieve all attributes - again adjust to your needs - see documentation for more options
 retrieveAttributes = None 

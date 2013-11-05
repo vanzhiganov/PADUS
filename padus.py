@@ -39,8 +39,8 @@ def search_member_in_ldap(ldap, ldapo, cn):
     searchFilter = "cn=*"
     #cn[0]
     #print ldap.SCORE_SUBTREE
-    print baseDN
-    print searchFilter
+    #print baseDN
+    #print searchFilter
 
     try:
         ldap_result_id = ldapo.search(baseDN, searchScope, searchFilter, retrieveAttributes)
@@ -53,12 +53,12 @@ def search_member_in_ldap(ldap, ldapo, cn):
                 if result_type == ldap.RES_SEARCH_ENTRY:
                     result_set.append(result_data)
 
-        print result_set[0][0][1]['cn'][0]
+        #print result_set[0][0][1]['cn'][0]
         str_uid = result_set[0][0][1]['uid'][0]
-        print result_set[0][0][1]['uidNumber'][0]
+        #print result_set[0][0][1]['uidNumber'][0]
         group_id = result_set[0][0][1]['gidNumber'][0]
-        print result_set[0][0][1]['unixHomeDirectory'][0]
-        print result_set[0][0][1]['loginShell'][0]
+        #print result_set[0][0][1]['unixHomeDirectory'][0]
+        #print result_set[0][0][1]['loginShell'][0]
         
         print "Check localgroup '%s': " % group_id
         if findgroup(group_id):
@@ -104,7 +104,7 @@ ldapo.simple_bind_s('cn=ldap,cn=users,dc=gm,dc=local', 'ldap')
 lc = ldapom.LdapConnection(uri='ldap://172.16.2.201', base='CN=ldap_test,CN=Users,DC=gm,DC=local', login='cn=ldap,cn=users,dc=gm,dc=local', password='ldap') 
 """
 
-baseDN = "dc=gm,dc=local"
+baseDN = "cn=users,dc=gm,dc=local"
 searchScope = ldap.SCOPE_SUBTREE
 ## retrieve all attributes - again adjust to your needs - see documentation for more options
 retrieveAttributes = None 

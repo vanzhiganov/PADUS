@@ -56,7 +56,7 @@ def search_member_in_ldap(ldap, ldapo, cn):
 		print result_set[0][0][1]['cn'][0]
 		str_uid = result_set[0][0][1]['uid'][0]
 		print result_set[0][0][1]['uidNumber'][0]
-		group_id = print result_set[0][0][1]['gidNumber'][0]
+		group_id = result_set[0][0][1]['gidNumber'][0]
 		print result_set[0][0][1]['unixHomeDirectory'][0]
 		print result_set[0][0][1]['loginShell'][0]
 		
@@ -86,17 +86,17 @@ def search_member_in_ldap(ldap, ldapo, cn):
 			}
 			
 			os.system("useradd -b /home/GM -d %(homedir)s -g %(gid)s -u %(uid)s %(username)s" % values)
-		else:
-			print "    user already exists."
-	except ldap.LDAPError, e:
-		print e
+        else:
+            print "    user already exists."
+    except ldap.LDAPError, e:
+        print e
 
 try:
-	ldapo = ldap.initialize('ldap://172.16.2.201')
-	ldapo.protocol_version = ldap.VERSION3
+    ldapo = ldap.initialize('ldap://172.16.2.201')
+    ldapo.protocol_version = ldap.VERSION3
 except ldap.LDAPError, e:
-	print e
-	sys.exit(2)
+    print e
+    sys.exit(2)
 
 ldapo.simple_bind_s('cn=ldap,cn=users,dc=gm,dc=local', 'ldap')
 
@@ -111,22 +111,22 @@ retrieveAttributes = None
 searchFilter = "cn=%s" % groupname
 
 try:
-	ldap_result_id = ldapo.search(baseDN, searchScope, searchFilter, retrieveAttributes)
-	result_set = []
-	while 1:
-		result_type, result_data = ldapo.result(ldap_result_id, 0)
-		if (result_data == []):
-			break
-		else:
-			if result_type == ldap.RES_SEARCH_ENTRY:
-				result_set.append(result_data)
+    ldap_result_id = ldapo.search(baseDN, searchScope, searchFilter, retrieveAttributes)
+    result_set = []
+    while 1:
+        result_type, result_data = ldapo.result(ldap_result_id, 0)
+        if (result_data == []):
+            break
+        else:
+            if result_type == ldap.RES_SEARCH_ENTRY:
+                result_set.append(result_data)
 
-	for member in result_set[0][0][1]['member']:
-		print member
-		search_member_in_ldap(ldap, ldapo, member)
+    for member in result_set[0][0][1]['member']:
+        print member
+        search_member_in_ldap(ldap, ldapo, member)
 
-	#print "Group: %s" % result_set[0][0][0]
-	#print "Members: %s" % result_set[0][0][1]['member']
-	#search_member_in_ldap(ldap, ldapo, result_set[0][0][1]['member'])
+    #print "Group: %s" % result_set[0][0][0]
+    #print "Members: %s" % result_set[0][0][1]['member']
+    #search_member_in_ldap(ldap, ldapo, result_set[0][0][1]['member'])
 except ldap.LDAPError, e:
-	print e
+    print e

@@ -68,24 +68,24 @@ def search_member_in_ldap(ldap, ldapo, cn):
 			os.system("groupadd -g %s %s" % (group_id, groupname))
 			
 		
-		# cat /etc/passwd | grep ^root: | sed -e 's/:.*//g'
+        # cat /etc/passwd | grep ^root: | sed -e 's/:.*//g'
 		
-		print "Check localuser '%s':" % str_uid
-		
-		#print pwd.getpwnam(str_uid)
-		
-		if not finduser(str_uid):
-			print "    user not exists.... create"
-			
-			values = {
-				"username": result_set[0][0][1]['uid'][0],
-				"shell": result_set[0][0][1]['loginShell'][0],
-				"uid": result_set[0][0][1]['uidNumber'][0],
-				"gid": result_set[0][0][1]['gidNumber'][0],
-				"homedir": result_set[0][0][1]['unixHomeDirectory'][0]
-			}
-			
-			os.system("useradd -b /home/GM -d %(homedir)s -g %(gid)s -u %(uid)s %(username)s" % values)
+        print "Check localuser '%s':" % str_uid
+
+        #print pwd.getpwnam(str_uid)
+
+        if not finduser(str_uid):
+            print "    user not exists.... create"
+
+            values = {
+                "username": result_set[0][0][1]['uid'][0],
+                "shell": result_set[0][0][1]['loginShell'][0],
+                "uid": result_set[0][0][1]['uidNumber'][0],
+                "gid": result_set[0][0][1]['gidNumber'][0],
+                "homedir": result_set[0][0][1]['unixHomeDirectory'][0]
+            }
+
+            os.system("useradd -b /home/GM -d %(homedir)s -g %(gid)s -u %(uid)s %(username)s" % values)
         else:
             print "    user already exists."
     except ldap.LDAPError, e:

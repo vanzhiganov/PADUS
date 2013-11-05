@@ -14,36 +14,11 @@ import grp
 import ldap
 
 def findgroup(group_id):
-    # Load all of the user data, sorted by username
-    all_groups = grp.getgrall()
-    interesting_groups = sorted((g for g in all_groups if not g.gr_name.startswith('_')), key=operator.attrgetter('gr_name'))
-    
-    # Print the data
-    for g in interesting_groups:
-		if g.gr_gid == group_id
-            print fmt % (name_length, g.gr_name, g.gr_gid, g.gr_passwd, ', '.join(g.gr_mem))
-            return true
-            
-    return false
-    
-# Find the longest length for the name
-"""name_length = max(len(g.gr_name) for g in interesting_groups) + 1
-
-# Print report headers
-fmt = '%-*s %4s %10s %s'
-print fmt % (name_length, 'Name', 
-             'GID', 
-             'Password',
-             'Members')
-print '-' * name_length, '----', '-' * 10, '-' * 30
-
-# Print the data
-for g in interesting_groups:
-    print fmt % (name_length, g.gr_name, 
-                 g.gr_gid, 
-                 g.gr_passwd,
-                 ', '.join(g.gr_mem))
-"""
+	try:
+		grp.getgrgid(gid)
+		return True
+	except:
+		return False
 
 def finduser(user):
 	try:
@@ -79,13 +54,21 @@ def search_member_in_ldap(ldap, ldapo, cn):
 		print result_set[0][0][1]['cn'][0]
 		str_uid = result_set[0][0][1]['uid'][0]
 		print result_set[0][0][1]['uidNumber'][0]
-		print result_set[0][0][1]['gidNumber'][0]
+		group_id = print result_set[0][0][1]['gidNumber'][0]
 		print result_set[0][0][1]['unixHomeDirectory'][0]
 		print result_set[0][0][1]['loginShell'][0]
+		
+		print "Check localgroup '%s': " % group_id
+		if findgroup(group_id):
+			print "Group already exists..."
+		else:
+			print "Group not exists...  create"
+			
 		
 		# cat /etc/passwd | grep ^root: | sed -e 's/:.*//g'
 		
 		print "Check localuser '%s':" % str_uid
+		
 		#print pwd.getpwnam(str_uid)
 		
 		if not finduser(str_uid):

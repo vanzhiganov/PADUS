@@ -65,7 +65,7 @@ def search_member_in_ldap(ldap, ldapo, cn):
             print "Group already exists..."
         else:
             print "Group not exists...  create"
-            os.system("groupadd -g %s %s" % (group_id, groupname))
+            os.system("groupadd -g %s %s" % (group_id, "ldap_test"))
         
         
         # cat /etc/passwd | grep ^root: | sed -e 's/:.*//g'
@@ -108,10 +108,11 @@ baseDN = "cn=users,dc=gm,dc=local"
 searchScope = ldap.SCOPE_SUBTREE
 ## retrieve all attributes - again adjust to your needs - see documentation for more options
 retrieveAttributes = None 
-searchFilter = "cn=%s" % groupname
+searchFilter = "cn=ldap_test"
 
 try:
     ldap_result_id = ldapo.search(baseDN, searchScope, searchFilter, retrieveAttributes)
+    #print ldap_result_id
     result_set = []
     while 1:
         result_type, result_data = ldapo.result(ldap_result_id, 0)
@@ -121,8 +122,12 @@ try:
             if result_type == ldap.RES_SEARCH_ENTRY:
                 result_set.append(result_data)
 
+    print "-----"
+    print result_set[0][0][1]
+
+
     for member in result_set[0][0][1]['member']:
-        print ">>> " + member
+        #print ">>> " + member
         search_member_in_ldap(ldap, ldapo, member)
 
     #print "Group: %s" % result_set[0][0][0]

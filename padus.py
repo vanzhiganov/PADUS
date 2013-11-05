@@ -122,7 +122,7 @@ try:
                 result_set.append(result_data)
 
     for member in result_set[0][0][1]['member']:
-        print member
+        print ">>> " + member
         search_member_in_ldap(ldap, ldapo, member)
 
     #print "Group: %s" % result_set[0][0][0]

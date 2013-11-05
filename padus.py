@@ -16,31 +16,31 @@ import ldap
 groupname = "ldap_test"
 
 def findgroup(group_id):
-	try:
-		grp.getgrgid(gid)
-		return True
-	except:
-		return False
+    try:
+        grp.getgrgid(gid)
+        return True
+    except:
+        return False
 
 def finduser(user):
-	try:
-		pwd.getpwnam(user)
-		print user, "user exists"
-		return True
-	except:
-		return False
+    try:
+        pwd.getpwnam(user)
+        print user, "user exists"
+        return True
+    except:
+        return False
 
 def search_member_in_ldap(ldap, ldapo, cn):
-	baseDN = cn
-	#"dc=gm,dc=local"
-	searchScope = ldap.SCOPE_SUBTREE
-	## retrieve all attributes - again adjust to your needs - see documentation for more options
-	retrieveAttributes = None
-	searchFilter = "cn=*"
-	#cn[0]
-	#print ldap.SCORE_SUBTREE
-	print baseDN
-	print searchFilter
+    baseDN = cn
+    #"dc=gm,dc=local"
+    searchScope = ldap.SCOPE_SUBTREE
+    ## retrieve all attributes - again adjust to your needs - see documentation for more options
+    retrieveAttributes = None
+    searchFilter = "cn=*"
+    #cn[0]
+    #print ldap.SCORE_SUBTREE
+    print baseDN
+    print searchFilter
 
     try:
         ldap_result_id = ldapo.search(baseDN, searchScope, searchFilter, retrieveAttributes)
